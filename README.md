@@ -8,7 +8,7 @@ Team: Kaija Bolliger, Elin Sigg · Expo SDK 58 · React Native · JavaScript
 
 ## Starten
 
-Voraussetzungen: Node.js 20 oder neuer, auf dem Handy die App **Expo Go** (aktuelle Version, SDK 57).
+Voraussetzungen: Node.js 20 oder neuer, auf dem Handy die App **Expo Go** (aktuelle Version, SDK 58).
 
 ```bash
 npm install
@@ -26,12 +26,12 @@ Tests: `npm test`
 
 ## Mindestanforderungen
 
-| Anforderung                     | Umsetzung                                                                                                                                                                                         |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Anforderung | Umsetzung |
+|---|---|
 | Eingabeformular mit Validierung | Screen 2 · Einrichten: Namen, Kategorie, Spione, Zeit. Prüft leere und doppelte Namen, max. 20 Zeichen, mind. 3 Spieler, gültige Anzahl Spione. «Karten verteilen» bleibt grau, bis alles stimmt. |
-| Persistenz                      | AsyncStorage mit 4 Schlüsseln (siehe unten)                                                                                                                                                       |
-| 4–5 Screens                     | Start, Einrichten, Karte, Runde, Auflösung + Dialog «Runde beenden?»                                                                                                                              |
-| Sensor                          | Beschleunigungssensor (`expo-sensors`): Handy umdrehen verdeckt die Karte                                                                                                                         |
+| Persistenz | AsyncStorage mit 4 Schlüsseln (siehe unten) |
+| 4–5 Screens | Start, Einrichten, Karte, Runde, Auflösung + Dialog «Runde beenden?» |
+| Sensor | Beschleunigungssensor (`expo-sensors`): Handy umdrehen verdeckt die Karte |
 
 ## Aufbau
 
@@ -59,19 +59,19 @@ docs/TESTKONZEPT.md        manuelle Testfälle auf dem Gerät
 
 ## Navigation (wie im Workflow-Diagramm)
 
-| Von        | Aktion                           | Nach                                             | Typ                |
-| ---------- | -------------------------------- | ------------------------------------------------ | ------------------ |
-| Start      | «Neue Runde»                     | Einrichten                                       | push               |
-| Start      | «Runde fortsetzen»               | Runde (oder Karte, falls noch Karten offen sind) | push               |
-| Einrichten | Zurück-Pfeil                     | Start                                            | pop                |
-| Einrichten | «Karten verteilen»               | Karte                                            | push               |
-| Karte      | «Weitergeben»                    | nächste Karte                                    | replace            |
-| Karte      | «Runde starten» (letzte Person)  | Runde                                            | replace            |
-| Runde      | ✕                                | Dialog «Runde beenden?»                          | Modal              |
-| Dialog     | «Weiterspielen» / «Beenden»      | Runde / Start                                    | schliessen / reset |
-| Runde      | «Abstimmen» oder Zeit abgelaufen | Auflösung                                        | push               |
-| Auflösung  | Zurück-Pfeil (vor dem Aufdecken) | Runde                                            | pop                |
-| Auflösung  | «Nochmal spielen» / «Zum Start»  | Einrichten / Start                               | reset              |
+| Von | Aktion | Nach | Typ |
+|---|---|---|---|
+| Start | «Neue Runde» | Einrichten | push |
+| Start | «Runde fortsetzen» | Runde (oder Karte, falls noch Karten offen sind) | push |
+| Einrichten | Zurück-Pfeil | Start | pop |
+| Einrichten | «Karten verteilen» | Karte | push |
+| Karte | «Weitergeben» | nächste Karte | replace |
+| Karte | «Runde starten» (letzte Person) | Runde | replace |
+| Runde | ✕ | Dialog «Runde beenden?» | Modal |
+| Dialog | «Weiterspielen» / «Beenden» | Runde / Start | schliessen / reset |
+| Runde | «Abstimmen» oder Zeit abgelaufen | Auflösung | push |
+| Auflösung | Zurück-Pfeil (vor dem Aufdecken) | Runde | pop |
+| Auflösung | «Nochmal spielen» / «Zum Start» | Einrichten / Start | reset |
 
 Screen 3 hat keinen Zurück-Weg (auch keine Geste und keine Android-Zurücktaste), damit niemand die Karte einer
 anderen Person sieht. Auf Screen 4 öffnet die Android-Zurücktaste den Dialog.
@@ -80,12 +80,12 @@ anderen Person sieht. Auf Screen 4 öffnet die Android-Zurücktaste den Dialog.
 
 Gespeichert wird lokal mit **AsyncStorage** (Key-Value, als JSON). Kein Server, keine Datenbank, kein Login.
 
-| Schlüssel    | Inhalt                                                                              | Wann gelöscht                             |
-| ------------ | ----------------------------------------------------------------------------------- | ----------------------------------------- |
-| `players`    | Liste der Spielernamen                                                              | nie, nur wenn ein Name entfernt wird      |
-| `settings`   | Kategorie, Anzahl Spione, Zeit                                                      | nie                                       |
-| `activeGame` | Wort, Spion(e), Startperson, gesehene Karten, Phase, Restzeit/Endzeit, Pausenstatus | nach dem Aufdecken oder bei «Beenden»     |
-| `history`    | letzte 20 Runden: Datum, Kategorie, Anzahl Spieler, Spion, Ergebnis                 | älteste Runde, sobald mehr als 20 da sind |
+| Schlüssel | Inhalt | Wann gelöscht |
+|---|---|---|
+| `players` | Liste der Spielernamen | nie, nur wenn ein Name entfernt wird |
+| `settings` | Kategorie, Anzahl Spione, Zeit | nie |
+| `activeGame` | Wort, Spion(e), Startperson, gesehene Karten, Phase, Restzeit/Endzeit, Pausenstatus | nach dem Aufdecken oder bei «Beenden» |
+| `history` | letzte 20 Runden: Datum, Kategorie, Anzahl Spieler, Spion, Ergebnis | älteste Runde, sobald mehr als 20 da sind |
 
 - Bei «Karten verteilen» werden `players` und `settings` gespeichert und `activeGame` angelegt.
 - `activeGame` wird bei jedem «Weitergeben», bei Pause/Weiter und beim Wechsel in den Hintergrund aktualisiert.
