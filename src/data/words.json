@@ -1,0 +1,6 @@
+{
+  "Essen": ["Pizza", "Sushi", "Raclette", "Fondue", "Burger", "Lasagne", "Rösti", "Spaghetti", "Döner", "Pommes", "Schokolade", "Gipfeli", "Älplermagronen", "Curry", "Salat", "Pancakes", "Tacos", "Glace", "Zopf", "Bratwurst"],
+  "Tiere": ["Hund", "Katze", "Elefant", "Pinguin", "Giraffe", "Delfin", "Kuh", "Adler", "Löwe", "Schildkröte", "Pferd", "Eichhörnchen", "Krokodil", "Hamster", "Hai", "Bär", "Fuchs", "Papagei", "Biene", "Steinbock"],
+  "Berufe": ["Lehrerin", "Arzt", "Pilotin", "Koch", "Polizist", "Informatikerin", "Bäcker", "Feuerwehrmann", "Coiffeuse", "Elektriker", "Tierärztin", "Schreiner", "Journalistin", "Gärtner", "Zahnarzt", "Architektin", "Busfahrer", "Pflegefachfrau", "Mechaniker", "Detektiv"],
+  "Andere": ["Strand", "Kino", "Bahnhof", "Spital", "Schule", "Flughafen", "Bibliothek", "Zirkus", "Skilift", "Supermarkt", "Hallenbad", "Museum", "Zeltlager", "Bank", "Konzert", "Bauernhof", "Fitnessstudio", "Restaurant", "Zoo", "Raumstation"]
+}
