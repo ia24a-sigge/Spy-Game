@@ -8,7 +8,7 @@ Team: Kaija Bolliger, Elin Sigg · Expo SDK 58 · React Native · JavaScript
 
 ## Starten
 
-Voraussetzungen: Node.js 20 oder neuer, auf dem Handy die App **Expo Go** (aktuelle Version, SDK 58).
+Voraussetzungen: Node.js 20 oder neuer, auf dem Handy die App **Expo Go** (aktuelle Version, SDK 57).
 
 ```bash
 npm install
