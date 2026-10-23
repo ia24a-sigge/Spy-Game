@@ -4,11 +4,11 @@ Partyspiel-App für M335 (Mobile Applikationen realisieren). Mehrere Personen sp
 Alle bekommen dasselbe geheime Wort, ausser dem Spion. In der Fragerunde versucht die Gruppe herauszufinden,
 wer der Spion ist.
 
-Team: Kaija Bolliger, Elin Sigg · Expo SDK 58 · React Native · JavaScript
+Team: Kaija Bolliger, Elin Sigg · Expo SDK 57 · React Native · JavaScript
 
 ## Starten
 
-Voraussetzungen: Node.js 20 oder neuer, auf dem Handy die App **Expo Go** (aktuelle Version, SDK 58).
+Voraussetzungen: Node.js 20 oder neuer, auf dem Handy die App **Expo Go** (aktuelle Version, SDK 57).
 
 ```bash
 npm install
