@@ -22,7 +22,7 @@ Gerät: ______________________ · Betriebssystem: __________ · Datum: _________
 |---|---|---|---|---|
 | T1 | Erster Start | App neu installieren und öffnen | «Noch keine Runden», nur «Neue Runde» | |
 | T2 | Formular leer | Neue Runde, Feld leer lassen, antippen und verlassen | Rotes Feld, «Feld ausfüllen», «Karten verteilen» grau | |
-| T3 | Doppelter Name | Zweimal «Alex» eingeben | «Name kommt doppelt vor» | |
+| T3 | Doppelter Name | Zweimal «Lena» eingeben | «Name kommt doppelt vor» | |
 | T4 | Zu wenige Spieler | Auf 2 Spieler löschen | «Mindestens 3 Spieler», Button grau | |
 | T5 | Spione begrenzt | 3 Spieler, Spione erhöhen | «+» bleibt bei 1 deaktiviert | |
 | T6 | Namen gespeichert | Runde starten, App schliessen, neue Runde | Namen und Einstellungen vorausgefüllt | |

@@ -10,7 +10,7 @@ const WIKI_CATEGORIES = {
 };
 
 export async function getRandomWord(category, timeoutMs = 3500) {
-  const fallback = () => ({ word: pickRandom(wordsFor(category)), source: 'offline' });
+  const fallback = () => pickRandom(wordsFor(category));
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -24,8 +24,8 @@ export async function getRandomWord(category, timeoutMs = 3500) {
     const words = (data?.query?.categorymembers || []).map((item) => item.title)
       .filter((title) => typeof title === 'string' && title.length >= 3 && title.length <= 22 && !title.includes(':') && !title.includes('('));
     if (!words.length) return fallback();
-    return { word: pickRandom(words), source: 'Wikipedia-API' };
-  } catch (_error) {
+    return pickRandom(words);
+  } catch {
     return fallback();
   } finally {
     clearTimeout(timeout);

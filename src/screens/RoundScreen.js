@@ -1,10 +1,11 @@
 // Screen 4 · Runde: Countdown, Pause, Abstimmen und Dialog «Runde beenden?».
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AppState, BackHandler, Modal, StyleSheet, Text, View } from 'react-native';
+import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { IconButton, PrimaryButton, ScreenHeader } from '../components/ui';
+import ConfirmDialog from '../components/ConfirmDialog';
 import { formatTime, pauseTimer, remainingMs, startTimer } from '../lib/game';
 import { clearActiveGame, loadActiveGame, saveActiveGame } from '../lib/storage';
 import { colors, font, sizes } from '../theme';
@@ -112,16 +113,15 @@ export default function RoundScreen({ navigation }) {
         <PrimaryButton title="Abstimmen" onPress={goToVote} style={{ marginTop: sizes.gap * 2 }} />
       </View>
 
-      <Modal visible={confirmVisible} transparent animationType="fade" onRequestClose={() => setConfirmVisible(false)}>
-        <View style={styles.overlay}>
-          <View style={styles.dialog} accessibilityViewIsModal>
-            <Text style={styles.dialogTitle}>Runde beenden?</Text>
-            <Text style={styles.dialogText}>Die laufende Runde geht verloren.</Text>
-            <PrimaryButton title="Weiterspielen" onPress={() => setConfirmVisible(false)} />
-            <PrimaryButton title="Beenden" variant="danger" onPress={endRound} style={{ marginTop: sizes.gap }} />
-          </View>
-        </View>
-      </Modal>
+      <ConfirmDialog
+        visible={confirmVisible}
+        title="Runde beenden?"
+        message="Die laufende Runde geht verloren."
+        cancelTitle="Weiterspielen"
+        confirmTitle="Beenden"
+        onCancel={() => setConfirmVisible(false)}
+        onConfirm={endRound}
+      />
     </SafeAreaView>
   );
 }
@@ -144,8 +144,4 @@ const styles = StyleSheet.create({
   starterLabel: { fontSize: font.small + 1, color: colors.muted },
   starterName: { fontSize: font.title, color: colors.text, marginVertical: 2 },
   starterHint: { fontSize: font.small + 1, color: colors.muted },
-  overlay: { flex: 1, backgroundColor: colors.overlay, alignItems: 'center', justifyContent: 'center', padding: 24 },
-  dialog: { width: '100%', maxWidth: 400, backgroundColor: colors.surface, borderRadius: 24, padding: 22 },
-  dialogTitle: { fontSize: font.heading + 2, color: colors.text, textAlign: 'center' },
-  dialogText: { fontSize: font.small + 1, color: colors.muted, textAlign: 'center', marginTop: 6, marginBottom: 20 },
 });

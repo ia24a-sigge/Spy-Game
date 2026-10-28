@@ -18,7 +18,7 @@ export function pickRandom(list, rand = Math.random) {
   return list[Math.floor(rand() * list.length)];
 }
 
-export function shuffle(list, rand = Math.random) {
+function shuffle(list, rand = Math.random) {
   const copy = [...list];
   for (let i = copy.length - 1; i > 0; i -= 1) {
     const j = Math.floor(rand() * (i + 1));
@@ -37,7 +37,6 @@ export function createGame({ players, category, spies, minutes }, rand = Math.ra
   const durationMs = minutes * 60 * 1000;
   return {
     id: String(now),
-    createdAt: new Date(now).toISOString(),
     players: [...players],
     category,
     word: pickRandom(wordsFor(category), rand),
@@ -81,12 +80,9 @@ export function formatTime(ms) {
 // ----- Auflösung -----
 export function evaluateVote(game, votedNames) {
   const names = Array.isArray(votedNames) ? votedNames : [votedNames];
-  const correct = names.filter((name) => isSpy(game, name));
   // Bei mehreren Spionen müssen alle gefunden werden.
   return {
-    votedName: names[0],
     votedNames: names,
-    correct,
     winner: game.spies.every((name) => names.includes(name)) ? 'group' : 'spy',
   };
 }

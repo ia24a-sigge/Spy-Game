@@ -5,7 +5,7 @@ import {
 
 // Vorhersagbarer Zufall für Tests
 const seq = (...values) => { let i = 0; return () => values[i++ % values.length]; };
-const PLAYERS = ['Alex', 'Noah', 'Mia', 'Luca', 'Anna'];
+const PLAYERS = ['Lena', 'Noah', 'Mia', 'Luca', 'Anna'];
 
 describe('createGame', () => {
   test('zieht Wort aus der Kategorie, Spion und Startperson aus der Gruppe', () => {

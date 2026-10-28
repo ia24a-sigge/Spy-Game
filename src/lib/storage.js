@@ -5,7 +5,7 @@ import {
   DEFAULT_SETTINGS, isValidGame, isValidHistoryEntry, sanitizeSettings, trimHistory,
 } from './game';
 
-export const KEYS = {
+const KEYS = {
   players: 'players', // Liste der Spielernamen
   settings: 'settings', // Kategorie, Anzahl Spione, Zeit
   activeGame: 'activeGame', // laufende Runde inkl. Wort, Spion, Restzeit

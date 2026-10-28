@@ -61,8 +61,8 @@ export default function SetupScreen({ navigation }) {
     try {
       const players = names.map((n) => n.trim());
       await Promise.all([savePlayers(players), saveSettings(settings)]);
-      const { word, source } = await getRandomWord(settings.category);
-      await saveActiveGame({ ...createGame({ players, ...settings }), word, wordSource: source });
+      const word = await getRandomWord(settings.category);
+      await saveActiveGame({ ...createGame({ players, ...settings }), word });
       navigation.navigate('Card');
     } catch (error) {
       console.warn('[setup] Speichern fehlgeschlagen', error);

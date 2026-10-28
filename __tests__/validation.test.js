@@ -3,19 +3,19 @@ import { nextFaceDown } from '../src/lib/faceDown';
 
 describe('validateSetup (Screen 2)', () => {
   test('gültige Eingabe', () => {
-    const r = validateSetup({ players: ['Alex', 'Noah', 'Mia'], spies: 1 });
+    const r = validateSetup({ players: ['Lena', 'Noah', 'Mia'], spies: 1 });
     expect(r.valid).toBe(true);
     expect(r.fieldErrors).toEqual(['', '', '']);
   });
 
   test('leeres Feld', () => {
-    const r = validateSetup({ players: ['Alex', '  ', 'Mia'], spies: 1 });
+    const r = validateSetup({ players: ['Lena', '  ', 'Mia'], spies: 1 });
     expect(r.valid).toBe(false);
     expect(r.fieldErrors[1]).toBe(MESSAGES.empty);
   });
 
   test('doppelter Name, auch mit anderer Gross-/Kleinschreibung', () => {
-    const r = validateSetup({ players: ['Alex', 'Noah', 'alex '], spies: 1 });
+    const r = validateSetup({ players: ['Lena', 'Noah', 'lena '], spies: 1 });
     expect(r.valid).toBe(false);
     expect(r.fieldErrors[0]).toBe('');
     expect(r.fieldErrors[2]).toBe(MESSAGES.duplicate);
@@ -27,13 +27,13 @@ describe('validateSetup (Screen 2)', () => {
   });
 
   test('mindestens 3 Spieler', () => {
-    const r = validateSetup({ players: ['Alex', 'Noah'], spies: 1 });
+    const r = validateSetup({ players: ['Lena', 'Noah'], spies: 1 });
     expect(r.valid).toBe(false);
     expect(r.playersError).toBe(MESSAGES.minPlayers);
   });
 
   test('zu viele Spione', () => {
-    const r = validateSetup({ players: ['Alex', 'Noah', 'Mia'], spies: 2 });
+    const r = validateSetup({ players: ['Lena', 'Noah', 'Mia'], spies: 2 });
     expect(r.valid).toBe(false);
     expect(r.spiesError).toBe(MESSAGES.tooManySpies);
   });
