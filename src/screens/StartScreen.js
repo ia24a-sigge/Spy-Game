@@ -8,8 +8,16 @@ import { Avatar, Notice, PrimaryButton, SectionLabel } from '../components/ui';
 import ConfirmDialog from '../components/ConfirmDialog';
 import HistoryRow from '../components/HistoryRow';
 import { clearActiveGame, loadActiveGame, loadHistory, takeStorageWarnings } from '../lib/storage';
-import { formatTime, remainingMs } from '../lib/game';
+import { formatTime, remainingMs, resumeScreen } from '../lib/game';
 import { colors, font, sizes } from '../theme';
+
+/** Short status of the running round for the "Runde fortsetzen" card. */
+function resumeMeta(game) {
+  const screen = resumeScreen(game);
+  if (screen === 'Card') return `Karte ${game.cardIndex + 1} von ${game.players.length}`;
+  if (screen === 'Vote') return 'Abstimmung offen';
+  return `noch ${formatTime(remainingMs(game))}`;
+}
 
 export default function StartScreen({ navigation }) {
   const [activeGame, setActiveGame] = useState(null);
@@ -33,8 +41,8 @@ export default function StartScreen({ navigation }) {
     }, []),
   );
 
-  // Continue with the cards if not everyone has seen theirs yet, otherwise with the round.
-  const resume = () => navigation.navigate(activeGame.phase === 'cards' ? 'Card' : 'Round');
+  // Continue exactly where the round stopped: cards, round or vote.
+  const resume = () => navigation.navigate(resumeScreen(activeGame));
 
   // A running round would be lost, so ask first.
   const newRound = () => {
@@ -80,9 +88,7 @@ export default function StartScreen({ navigation }) {
               <Text style={styles.resumeTitle}>Runde fortsetzen</Text>
               <Text style={styles.resumeMeta}>
                 {activeGame.players.length} Spieler · {activeGame.category} ·{' '}
-                {activeGame.phase === 'cards'
-                  ? `Karte ${activeGame.cardIndex + 1} von ${activeGame.players.length}`
-                  : `noch ${formatTime(remainingMs(activeGame))}`}
+                {resumeMeta(activeGame)}
               </Text>
             </View>
             <Text style={styles.play}>▶</Text>

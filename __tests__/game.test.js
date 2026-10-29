@@ -1,6 +1,6 @@
 import {
   createGame, evaluateVote, formatTime, historyEntry, isValidGame, maxSpies, pauseTimer,
-  remainingMs, sanitizeSettings, startTimer, trimHistory, wordsFor, HISTORY_LIMIT,
+  remainingMs, resumeScreen, sanitizeSettings, startTimer, trimHistory, wordsFor, HISTORY_LIMIT,
 } from '../src/lib/game';
 
 // Predictable "random" numbers for tests
@@ -61,6 +61,15 @@ describe('Timer', () => {
 
   test('never negative', () => {
     expect(remainingMs(startTimer(base, 0), 10 ** 9)).toBe(0);
+  });
+
+  test('resume opens the right screen', () => {
+    expect(resumeScreen(base)).toBe('Card');
+    const running = startTimer(base, 0);
+    expect(resumeScreen(running, 1000)).toBe('Round');
+    expect(resumeScreen(running, 10 ** 9)).toBe('Vote');
+    expect(resumeScreen({ ...pauseTimer(running, 1000), phase: 'vote' }, 2000)).toBe('Vote');
+    expect(resumeScreen({ ...pauseTimer(running, 10 ** 9), phase: 'round' }, 10 ** 9)).toBe('Vote');
   });
 
   test('formatTime', () => {

@@ -95,6 +95,17 @@ export function pauseTimer(game, now = Date.now()) {
   return { ...game, paused: true, remainingMs: remainingMs(game, now), endTime: null };
 }
 
+/**
+ * Screen where a stored round continues: the cards if not everyone has seen theirs,
+ * the vote if it is open or the time is already over, otherwise the round.
+ * @returns {'Card' | 'Round' | 'Vote'}
+ */
+export function resumeScreen(game, now = Date.now()) {
+  if (game.phase === 'cards') return 'Card';
+  if (game.phase === 'vote' || remainingMs(game, now) <= 0) return 'Vote';
+  return 'Round';
+}
+
 /** Formats milliseconds as mm:ss, rounding up so "00:00" only shows when the time is really over. */
 export function formatTime(ms) {
   const total = Math.ceil(ms / 1000);

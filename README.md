@@ -130,13 +130,15 @@ docs/TESTKONZEPT.md        Manuelle Testfälle auf dem Gerät
 | Von | Aktion | Nach |
 |---|---|---|
 | Start | «Neue Runde» | Einrichten (bei laufender Runde zuerst Bestätigung) |
-| Start | «Runde fortsetzen» | Runde oder Karte, falls noch Karten offen sind |
+| Start | «Runde fortsetzen» | Karte, Runde oder Abstimmung: genau dort, wo die Runde aufgehört hat |
 | Einrichten | «Karten verteilen» | Karte |
 | Karte | «Weitergeben» | nächste Karte (replace) |
 | Karte | «Runde starten» (letzte Person) | Runde (replace) |
 | Runde | ✕ oder Android-Zurück | Dialog «Runde beenden?» |
 | Runde | «Abstimmen» oder Zeit abgelaufen | Auflösung |
 | Auflösung | «Nochmal spielen» / «Zum Start» | Einrichten / Start |
+
+Ist die Zeit abgelaufen, führt kein Weg mehr zurück in die Runde: Die Gruppe muss abstimmen.
 
 Auf dem Karten-Screen gibt es keinen Zurück-Weg (keine Geste, keine Android-Zurücktaste), damit niemand die Karte
 einer anderen Person sieht.

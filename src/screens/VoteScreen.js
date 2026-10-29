@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { Badge, IconButton, PrimaryButton, ScreenHeader } from '../components/ui';
-import { evaluateVote, historyEntry, joinNames } from '../lib/game';
+import { evaluateVote, historyEntry, joinNames, remainingMs } from '../lib/game';
 import { addToHistory, clearActiveGame, loadActiveGame } from '../lib/storage';
 import { colors, font, sizes } from '../theme';
 import VotePlayerRow from '../components/VotePlayerRow';
@@ -22,15 +22,18 @@ export default function VoteScreen({ navigation }) {
     });
   }, [navigation]);
 
-  // After the reveal there is no way back into the finished round (no swipe, no Android back button).
+  // Going back to the round only makes sense while there is time left and nothing is revealed yet.
+  // Otherwise back arrow, swipe and the Android back button are all disabled.
+  const canGoBack = Boolean(game) && !result && remainingMs(game) > 0;
+
   useEffect(() => {
-    navigation.setOptions({ gestureEnabled: !result });
-  }, [navigation, result]);
+    navigation.setOptions({ gestureEnabled: canGoBack });
+  }, [navigation, canGoBack]);
   useFocusEffect(
     useCallback(() => {
-      const sub = BackHandler.addEventListener('hardwareBackPress', () => Boolean(result));
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => !canGoBack);
       return () => sub.remove();
-    }, [result]),
+    }, [canGoBack]),
   );
 
   if (!game) return <SafeAreaView style={styles.safe} />;
@@ -86,7 +89,7 @@ export default function VoteScreen({ navigation }) {
       <View style={styles.headerWrap}>
         <ScreenHeader
           title="Abstimmen"
-          left={<IconButton symbol="‹" accessibilityLabel="Zurück zur Runde" onPress={() => navigation.goBack()} />}
+          left={canGoBack ? <IconButton symbol="‹" accessibilityLabel="Zurück zur Runde" onPress={() => navigation.goBack()} /> : null}
         />
       </View>
       <FlatList
