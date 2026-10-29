@@ -21,7 +21,7 @@ wer der Spion ist, und der Spion versucht, nicht aufzufliegen.
 
 | | |
 |---|---|
-| Framework | Expo SDK 57, React Native 0.86, JavaScript |
+| Framework | Expo SDK 58, React Native 0.88, JavaScript |
 | Navigation | React Navigation 7 (Native Stack) |
 | Persistenz | AsyncStorage |
 | Sensor | `expo-sensors` (Accelerometer) |
@@ -29,7 +29,7 @@ wer der Spion ist, und der Spion versucht, nicht aufzufliegen.
 
 ## Starten
 
-Voraussetzungen: Node.js 20 oder neuer und auf dem Handy die App **Expo Go** (SDK 57).
+Voraussetzungen: Node.js 22 oder neuer und auf dem Handy die aktuelle App **Expo Go** (SDK 58).
 
 ```bash
 npm install
@@ -39,7 +39,40 @@ npx expo start
 QR-Code mit der Kamera (iOS) oder in Expo Go (Android) scannen. Handy und Computer müssen im selben WLAN sein,
 sonst `npx expo start --tunnel`.
 
-Meldet Expo Go eine falsche SDK-Version: `npx expo install --fix`.
+### Fehler beim Starten
+
+**Expo Go meldet eine falsche SDK-Version** (z. B. «Project is incompatible with this version of Expo Go»):
+
+```bash
+npm install expo@^58.0.0
+npx expo install --fix
+npx expo start --clear
+```
+
+Immer beide Befehle ausführen. `npm install expo@^58.0.0` aktualisiert nur Expo selbst, `npx expo install --fix`
+bringt danach React Native und alle anderen Pakete auf die passende Version.
+
+**«Unable to resolve module react-native/unstable-internals-do-not-use»** oder viele Warnungen
+«invalid package.json configuration»: Expo und React Native passen nicht zusammen, meistens weil nach
+`npm install expo@...` der zweite Befehl gefehlt hat.
+
+```bash
+npx expo install --fix
+npx expo start --clear
+```
+
+Hilft das nicht, `node_modules` löschen und neu installieren (Windows PowerShell, auf macOS `rm -rf node_modules`):
+
+```powershell
+Remove-Item -Recurse -Force node_modules
+npm install
+npx expo start --clear
+```
+
+**«Port 8081 is being used by another process»:** Mit `y` einen anderen Port nehmen oder das alte Terminal mit
+`npx expo start` schliessen.
+
+Prüfen, ob alles zusammenpasst: `npx expo-doctor`
 
 | Befehl | Was es macht |
 |---|---|

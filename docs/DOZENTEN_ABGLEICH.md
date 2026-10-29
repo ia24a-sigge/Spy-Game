@@ -1,7 +1,7 @@
 # Abgleich mit den Unterlagen des Dozenten (23.10.2026)
 
 ## Basis
-- JavaScript / Expo SDK 57 / React Navigation 7: `package.json`, `App.js`.
+- JavaScript / Expo SDK 58 / React Navigation 7: `package.json`, `App.js`.
 - Gemeinsame UI-Bausteine und Styles: `src/components/ui.js`, `src/theme.js`.
 - Eingabe und `useState`: `SetupScreen.js`.
 - Sensor mit Verfügbarkeitsprüfung und Cleanup: `src/lib/useFaceDown.js`.
