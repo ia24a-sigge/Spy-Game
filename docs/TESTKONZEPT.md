@@ -37,10 +37,11 @@ Gerät: ______________________ · Betriebssystem: __________ · Datum: _________
 | T15 | Fortsetzen nach Neustart | Während der Runde App komplett schliessen und öffnen | Startscreen zeigt «Runde fortsetzen» mit Restzeit | |
 | T16 | Beenden-Dialog | ✕, «Weiterspielen» | Dialog schliesst, Runde läuft weiter | |
 | T17 | Runde beenden | ✕, «Beenden» | Startscreen, keine laufende Runde | |
-| T18 | Zeit abgelaufen | Zeit 1 min, warten | Klingelton ertönt, Wechsel zur Abstimmung | |
+| T18 | Zeit abgelaufen | Zeit 1 min, warten | Klingelton und Vibration, Wechsel zur Abstimmung | |
 | T19 | Kein Ton beim Abstimmen | Während die Zeit läuft «Abstimmen» tippen | Kein Klingelton, Wechsel zur Abstimmung | |
 | T20 | Abstimmen | Person wählen, «Aufdecken» | Ergebnis, Spion und Wort sichtbar | |
 | T21 | Verlauf | Zum Start | Runde erscheint unter «Letzte Runden» mit Label | |
 | T22 | Nochmal spielen | Nach dem Aufdecken «Nochmal spielen» | Einrichten mit gleichen Namen | |
 | T23 | Verlauf max. 20 | 21 Runden spielen | Liste zeigt 20 Runden | |
-| T24 | Offline | Flugmodus, ganze Runde spielen | Alles funktioniert | |
+| T24 | Bildschirm bleibt an | Runde starten, Handy 2 min nicht berühren | Bildschirm sperrt sich nicht, Zeit läuft weiter | |
+| T25 | Offline | Flugmodus, ganze Runde spielen | Alles funktioniert | |

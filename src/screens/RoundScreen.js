@@ -1,9 +1,10 @@
 // Screen 4 · Runde: Countdown, Pause, Abstimmen und Dialog «Runde beenden?».
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
+import { AppState, BackHandler, StyleSheet, Text, Vibration, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
+import { useKeepAwake } from 'expo-keep-awake';
 
 import { IconButton, PrimaryButton, ScreenHeader } from '../components/ui';
 import ConfirmDialog from '../components/ConfirmDialog';
@@ -17,7 +18,8 @@ export default function RoundScreen({ navigation }) {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const gameRef = useRef(null);
   const leaving = useRef(false);
-  const ring = useAudioPlayer(require('../../assets/ring.wav'));
+  const ring = useAudioPlayer(require('../../assets/ring.wav'), { downloadFirst: true });
+  useKeepAwake();
 
   useEffect(() => {
     setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
@@ -83,6 +85,7 @@ export default function RoundScreen({ navigation }) {
     if (!game || game.paused || left > 0 || leaving.current) return;
     ring.seekTo(0);
     ring.play();
+    Vibration.vibrate([0, 500, 200, 500]);
     goToVote();
   }, [game, left, goToVote, ring]);
 

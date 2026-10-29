@@ -12,7 +12,8 @@ wer der Spion ist, und der Spion versucht, nicht aufzufliegen.
 - Karten reihum verteilen, jede Person sieht nur ihre eigene Karte
 - Handy umdrehen verdeckt die Karte (Beschleunigungssensor)
 - Countdown mit Pause, pausiert automatisch, wenn die App in den Hintergrund geht
-- Klingelton, sobald die Zeit abgelaufen ist (auch im Lautlos-Modus auf dem iPhone)
+- Klingelton und Vibration, sobald die Zeit abgelaufen ist (Ton auch im Lautlos-Modus auf dem iPhone)
+- Bildschirm bleibt während der Runde an, damit die Zeit nicht durch die automatische Sperre pausiert
 - Abstimmung und Auflösung, auch mit mehreren Spionen
 - Laufende Runde wird gespeichert und kann fortgesetzt werden
 - Verlauf der letzten 20 Runden
@@ -73,6 +74,8 @@ npx expo start --clear
 
 **«Port 8081 is being used by another process»:** Mit `y` einen anderen Port nehmen oder das alte Terminal mit
 `npx expo start` schliessen.
+
+**Kein Klingelton:** Medienlautstärke am Handy hochdrehen (nicht nur den Klingelton) und prüfen, ob Bluetooth-Kopfhörer verbunden sind. Das Handy vibriert trotzdem.
 
 Prüfen, ob alles zusammenpasst: `npx expo-doctor`
 
