@@ -1,4 +1,4 @@
-// Screen 1 · Start: neue Runde starten oder laufende Runde fortsetzen.
+// Screen 1 "Start": start a new round, continue a running round, see the last rounds.
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +18,7 @@ export default function StartScreen({ navigation }) {
   const [storageWarning, setStorageWarning] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
 
+  // Reload every time the screen is shown, e.g. after a round was finished.
   useFocusEffect(
     useCallback(() => {
       let active = true;
@@ -32,8 +33,10 @@ export default function StartScreen({ navigation }) {
     }, []),
   );
 
+  // Continue with the cards if not everyone has seen theirs yet, otherwise with the round.
   const resume = () => navigation.navigate(activeGame.phase === 'cards' ? 'Card' : 'Round');
 
+  // A running round would be lost, so ask first.
   const newRound = () => {
     if (activeGame) setConfirmVisible(true);
     else navigation.navigate('Setup');

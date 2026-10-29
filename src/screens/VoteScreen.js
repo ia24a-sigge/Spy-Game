@@ -1,4 +1,4 @@
-// Screen 5 · Auflösung: abstimmen, aufdecken, nochmals spielen.
+// Screen 5 "Auflösung": vote, reveal the spies and the word, play again.
 import { useCallback, useEffect, useState } from 'react';
 import { BackHandler, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,7 +12,7 @@ import VotePlayerRow from '../components/VotePlayerRow';
 
 export default function VoteScreen({ navigation }) {
   const [game, setGame] = useState(null);
-  const [selected, setSelected] = useState([]); // wird bewusst nicht gespeichert
+  const [selected, setSelected] = useState([]); // deliberately not stored
   const [result, setResult] = useState(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function VoteScreen({ navigation }) {
     });
   }, [navigation]);
 
-  // Nach dem Aufdecken gibt es kein Zurück mehr in die beendete Runde.
+  // After the reveal there is no way back into the finished round (no swipe, no Android back button).
   useEffect(() => {
     navigation.setOptions({ gestureEnabled: !result });
   }, [navigation, result]);
@@ -35,6 +35,7 @@ export default function VoteScreen({ navigation }) {
 
   if (!game) return <SafeAreaView style={styles.safe} />;
 
+  // Saves the round in the history, deletes the running round and shows the result.
   const reveal = async () => {
     if (selected.length !== game.spies.length) return;
     const outcome = evaluateVote(game, selected);
@@ -43,6 +44,13 @@ export default function VoteScreen({ navigation }) {
     setResult(outcome);
   };
 
+  // Tap again to unselect. At most as many people as there are spies can be selected.
+  const toggle = (name) => setSelected((current) => {
+    if (current.includes(name)) return current.filter((n) => n !== name);
+    return current.length < game.spies.length ? [...current, name] : current;
+  });
+
+  // "Nochmal spielen" keeps the start screen below, so the back arrow in the setup still works.
   const playAgain = () => navigation.reset({ index: 1, routes: [{ name: 'Start' }, { name: 'Setup' }] });
   const toStart = () => navigation.reset({ index: 0, routes: [{ name: 'Start' }] });
 
@@ -97,9 +105,7 @@ export default function VoteScreen({ navigation }) {
           <VotePlayerRow
             name={name}
             selected={selected.includes(name)}
-            onPress={() => setSelected((current) => current.includes(name)
-              ? current.filter((n) => n !== name)
-              : current.length < game.spies.length ? [...current, name] : current)}
+            onPress={() => toggle(name)}
           />
         )}
       />

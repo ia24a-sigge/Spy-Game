@@ -1,10 +1,14 @@
-// Gemeinsame UI-Bausteine. Gleiche Bausteine auf allen Screens = Erwartungskonformität.
+// Shared UI building blocks. Using the same blocks on every screen keeps the app consistent ("Erwartungskonformität").
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, font, sizes } from '../theme';
 
+// Makes small buttons a bit easier to hit without changing their look.
 const HIT_SLOP = { top: 4, bottom: 4, left: 4, right: 4 };
 
-/** Grosser Button unten (56 pt). variant: primary | secondary | danger */
+/**
+ * Large button at the bottom of a screen (56 dp high).
+ * @param {{ title: string, onPress: () => void, disabled?: boolean, variant?: 'primary' | 'secondary' | 'danger', style?: object, accessibilityHint?: string }} props
+ */
 export function PrimaryButton({ title, onPress, disabled = false, variant = 'primary', style, accessibilityHint }) {
   return (
     <Pressable
@@ -29,7 +33,10 @@ export function PrimaryButton({ title, onPress, disabled = false, variant = 'pri
   );
 }
 
-/** Quadratischer Icon-Button, mindestens 48 × 48 dp. */
+/**
+ * Square button with a symbol (e.g. back arrow, close, + and -), at least 48 x 48 dp.
+ * @param {{ symbol: string, onPress: () => void, accessibilityLabel: string, disabled?: boolean, style?: object }} props
+ */
 export function IconButton({ symbol, onPress, accessibilityLabel, disabled = false, style }) {
   return (
     <Pressable
@@ -46,7 +53,10 @@ export function IconButton({ symbol, onPress, accessibilityLabel, disabled = fal
   );
 }
 
-/** Kopfzeile: links Zurück oder Schliessen, Titel in der Mitte. */
+/**
+ * Header with an optional button on the left (back or close) and the title in the middle.
+ * An empty view on the right keeps the title centered.
+ */
 export function ScreenHeader({ title, left }) {
   return (
     <View style={styles.header}>
@@ -57,7 +67,10 @@ export function ScreenHeader({ title, left }) {
   );
 }
 
-/** – Wert + : Stepper mit 48 × 48 dp Tasten. */
+/**
+ * "- value +" control for numbers (spies, minutes). The buttons turn grey at the limits.
+ * @param {{ label: string, value: number, display?: string, onChange: (v: number) => void, min: number, max: number }} props
+ */
 export function Stepper({ label, value, display, onChange, min, max }) {
   return (
     <View style={styles.stepperRow}>
@@ -71,7 +84,7 @@ export function Stepper({ label, value, display, onChange, min, max }) {
   );
 }
 
-/** Runder Kreis mit Initiale oder Nummer. */
+/** Round circle with an initial or a number. */
 export function Avatar({ text, size = 32, fill = colors.covered }) {
   return (
     <View style={[styles.avatar, { width: size, height: size, borderRadius: size / 2, backgroundColor: fill }]}>
@@ -80,7 +93,10 @@ export function Avatar({ text, size = 32, fill = colors.covered }) {
   );
 }
 
-/** Kleines Label mit Text, z. B. «Gruppe» oder «Spion». Nie nur Farbe. */
+/**
+ * Small label like "Gruppe" or "Spion". It always contains text, the meaning never depends on color alone.
+ * @param {{ text: string, tone?: 'hint' | 'spy' | 'neutral' }} props
+ */
 export function Badge({ text, tone = 'hint' }) {
   const map = {
     hint: [colors.hint, colors.hintBorder],
@@ -95,7 +111,10 @@ export function Badge({ text, tone = 'hint' }) {
   );
 }
 
-/** Hinweisfeld (nicht antippbar). tone: hint | warning */
+/**
+ * Info box that cannot be tapped.
+ * @param {{ tone?: 'hint' | 'warning' }} props green hint or yellow warning
+ */
 export function Notice({ children, tone = 'hint', style }) {
   const bg = tone === 'warning' ? colors.warning : colors.hint;
   const border = tone === 'warning' ? colors.warningBorder : colors.hintBorder;
@@ -106,6 +125,7 @@ export function Notice({ children, tone = 'hint', style }) {
   );
 }
 
+/** Small uppercase section title with optional content on the right (e.g. the player count). */
 export function SectionLabel({ children, right }) {
   return (
     <View style={styles.sectionRow}>

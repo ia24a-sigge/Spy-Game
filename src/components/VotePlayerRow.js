@@ -1,8 +1,11 @@
-// Wiederverwendbare Spielerzeile für die Abstimmung (CookMate: ListItem).
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { Avatar } from './ui';
 import { colors, font, sizes } from '../theme';
 
+/**
+ * Selectable player row in the vote (used as FlatList item). Selected rows turn purple.
+ * @param {{ name: string, selected: boolean, onPress: () => void }} props
+ */
 export default function VotePlayerRow({ name, selected, onPress }) {
   return (
     <Pressable

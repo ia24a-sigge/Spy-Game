@@ -110,6 +110,7 @@ src/
     ui.js                  Basis-Bausteine: PrimaryButton, IconButton, Stepper, Header, Badge, Notice
     ConfirmDialog.js       Bestätigungsdialog (Start und Runde)
     HistoryRow.js          Zeile im Verlauf
+    PlayerInputRow.js      Namensfeld im Formular (Einrichten)
     VotePlayerRow.js       Spielerzeile bei der Abstimmung
   lib/
     game.js                Spiel-Logik ohne React (Wort/Spion ziehen, Timer, Auswertung)

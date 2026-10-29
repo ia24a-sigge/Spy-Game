@@ -1,4 +1,5 @@
-// Screen 4 · Runde: Countdown, Pause, Abstimmen und Dialog «Runde beenden?».
+// Screen 4 "Runde": countdown, pause, vote and the dialog "Runde beenden?".
+// When the time is up, a ringtone plays, the phone vibrates and the vote opens.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, BackHandler, StyleSheet, Text, Vibration, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,20 +19,25 @@ export default function RoundScreen({ navigation }) {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const gameRef = useRef(null);
   const leaving = useRef(false);
+  // downloadFirst: iOS in Expo Go cannot play the file directly from the dev server (no file extension in the URL).
   const ring = useAudioPlayer(require('../../assets/ring.wav'), { downloadFirst: true });
+  // Keep the screen on, otherwise the auto lock would pause the round and the time would never run out.
   useKeepAwake();
 
+  // Play the ringtone even if the iPhone is set to silent.
   useEffect(() => {
     setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
   }, []);
 
+  // Keeps state, ref and storage in sync. The ref is needed in listeners that would otherwise see old state.
   const update = useCallback(async (next) => {
     gameRef.current = next;
     setGame(next);
     await saveActiveGame(next);
   }, []);
 
-  // Beim Öffnen (auch zurück aus der Abstimmung) Runde aus dem Speicher laden.
+  // Load the round from storage when the screen opens (also when coming back from the vote).
+  // Coming back from the vote, the round continues paused.
   useFocusEffect(
     useCallback(() => {
       leaving.current = false;
@@ -45,7 +51,7 @@ export default function RoundScreen({ navigation }) {
         setGame(next);
         if (next !== g) saveActiveGame(next);
       });
-      // Android-Zurücktaste öffnet die Rückfrage statt die Runde zu verlassen.
+      // The Android back button opens the confirmation instead of leaving the round.
       const sub = BackHandler.addEventListener('hardwareBackPress', () => {
         setConfirmVisible(true);
         return true;
@@ -54,14 +60,14 @@ export default function RoundScreen({ navigation }) {
     }, [navigation]),
   );
 
-  // Countdown: Anzeige wird jede Viertelsekunde aus der Endzeit berechnet.
+  // Countdown: the display is recalculated from the end time four times per second.
   useEffect(() => {
     if (!game || game.paused) return undefined;
     const timer = setInterval(() => setNow(Date.now()), 250);
     return () => clearInterval(timer);
   }, [game]);
 
-  // App geht in den Hintergrund (z. B. Anruf): Runde pausieren und Restzeit speichern.
+  // App goes to the background (e.g. a phone call): pause the round and save the remaining time.
   useEffect(() => {
     const sub = AppState.addEventListener('change', (state) => {
       const g = gameRef.current;
@@ -70,6 +76,7 @@ export default function RoundScreen({ navigation }) {
     return () => sub.remove();
   }, [update]);
 
+  // `leaving` makes sure this only runs once, even if the timer and the button fire at the same time.
   const goToVote = useCallback(async () => {
     const g = gameRef.current;
     if (!g || leaving.current) return;
@@ -80,7 +87,7 @@ export default function RoundScreen({ navigation }) {
 
   const left = game ? remainingMs(game, now) : 0;
 
-  // Zeit abgelaufen: Klingelton und automatisch zur Abstimmung.
+  // Time is up: ringtone, vibration and open the vote. No sound when the group taps "Abstimmen" itself.
   useEffect(() => {
     if (!game || game.paused || left > 0 || leaving.current) return;
     ring.seekTo(0);
@@ -93,6 +100,7 @@ export default function RoundScreen({ navigation }) {
 
   const togglePause = () => update(game.paused ? startTimer(game) : pauseTimer(game));
 
+  // "Beenden" in the dialog: delete the round and go back to the start screen.
   const endRound = async () => {
     leaving.current = true;
     setConfirmVisible(false);

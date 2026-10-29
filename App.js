@@ -12,11 +12,15 @@ import { colors } from './src/theme';
 
 const Stack = createNativeStackNavigator();
 
+// Same background color as the screens, so there is no white flash between screens.
 const theme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: colors.background } };
 
-// Navigation laut Workflow-Diagramm: ein Stack ohne Tab Bar.
-// Screen 3 und 4 haben keine Zurück-Geste, damit niemand eine fremde Karte sieht
-// oder die Runde aus Versehen verlässt.
+/**
+ * Entry point of the app. Navigation follows the workflow diagram from the concept:
+ * one stack without a tab bar, because the game has a fixed order of screens.
+ * Screens 3 and 4 have no back swipe, so nobody sees another player's card
+ * or leaves the round by accident.
+ */
 export default function App() {
   return (
     <SafeAreaProvider>

@@ -2,6 +2,11 @@ import { Modal, StyleSheet, Text, View } from 'react-native';
 import { PrimaryButton } from './ui';
 import { colors, font, sizes } from '../theme';
 
+/**
+ * Confirmation dialog for actions that cannot be undone, e.g. "Neue Runde starten?" or "Runde beenden?".
+ * The safe choice (cancel) is the highlighted button, the destructive choice is red.
+ * @param {{ visible: boolean, title: string, message: string, cancelTitle: string, confirmTitle: string, onCancel: () => void, onConfirm: () => void }} props
+ */
 export default function ConfirmDialog({ visible, title, message, cancelTitle, confirmTitle, onCancel, onConfirm }) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel} statusBarTranslucent>

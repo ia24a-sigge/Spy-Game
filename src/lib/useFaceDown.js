@@ -1,11 +1,19 @@
-// Erkennt beide Bewegungen: Display nach unten und danach wieder nach oben.
+// React hook for the special feature: detects when the phone is turned face down and back up again.
 import { useEffect, useRef, useState } from 'react';
 import { Accelerometer } from 'expo-sensors';
 import { nextFaceDown } from './faceDown';
 
+/**
+ * Listens to the accelerometer while `enabled` is true. The sensor is switched off otherwise to save battery.
+ * @param {boolean} enabled
+ * @param {() => void} onFaceDown called when the display turns face down
+ * @param {() => void} [onFaceUp] called when the display turns face up again
+ * @returns {{ available: boolean | null }} null while checking, false if the phone has no sensor
+ */
 export function useFaceDown(enabled, onFaceDown, onFaceUp) {
   const [available, setAvailable] = useState(null);
   const down = useRef(false);
+  // Always call the latest callbacks without restarting the sensor on every render.
   const callbacks = useRef({ onFaceDown, onFaceUp });
   callbacks.current = { onFaceDown, onFaceUp };
 
@@ -29,5 +37,6 @@ export function useFaceDown(enabled, onFaceDown, onFaceUp) {
     }).catch(() => { if (active) setAvailable(false); });
     return () => { active = false; subscription?.remove(); down.current = false; };
   }, [enabled]);
+
   return { available };
 }

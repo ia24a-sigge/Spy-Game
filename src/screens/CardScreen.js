@@ -1,6 +1,6 @@
-// Screen 3 · Karte (Special Feature: Beschleunigungssensor).
-// Ablauf pro Person: verdeckt -> «Aufdecken» -> Wort lesen -> Handy umdrehen oder
-// «Karte verdecken» -> «Weitergeben» (erst jetzt aktiv).
+// Screen 3 "Karte" with the special feature (accelerometer).
+// Flow per player: card covered -> "Aufdecken" -> read the word -> turn the phone face down
+// (or tap "Karte verdecken") -> turn it back up (or tap "Weitergeben") -> next player.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,7 +26,7 @@ export default function CardScreen({ navigation }) {
     });
   }, [navigation]);
 
-  // Kein Zurück (auch nicht mit der Android-Taste): sonst sähe man die vorherige Karte.
+  // No way back (not even with the Android back button), otherwise the next player could see the previous card.
   useFocusEffect(
     useCallback(() => {
       const sub = BackHandler.addEventListener('hardwareBackPress', () => true);
@@ -34,14 +34,44 @@ export default function CardScreen({ navigation }) {
     }, []),
   );
 
-  const cover = useCallback(() => { setRevealed(false); setSensorCovered(false); }, []);
-  const sensorDown = useCallback(() => { setRevealed(false); setSensorCovered(true); }, []);
-  const sensorUp = useCallback(() => {
-    // Erst nach echtem Umdrehen nach unten darf das Aufrichten weitergeben.
+  // Saves the progress and opens the next card. After the last card the timer starts.
+  // `replace` creates a fresh screen, so the next card always starts covered.
+  const passOn = async () => {
+    if (!game || !viewed || passing.current) return;
+    passing.current = true;
+    const nextIndex = game.cardIndex + 1;
+    if (nextIndex === game.players.length) {
+      await saveActiveGame(startTimer({ ...game, cardIndex: nextIndex }));
+      navigation.replace('Round');
+    } else {
+      await saveActiveGame({ ...game, cardIndex: nextIndex });
+      navigation.replace('Card');
+    }
+  };
+
+  const reveal = () => {
+    setRevealed(true);
+    setViewed(true);
+    setSensorCovered(false);
+  };
+
+  const cover = () => {
+    setRevealed(false);
+    setSensorCovered(false);
+  };
+
+  const handleFaceDown = () => {
+    setRevealed(false);
+    setSensorCovered(true);
+  };
+
+  // Only a real "face down, then face up" movement passes the phone on, not just lifting it.
+  const handleFaceUp = () => {
     if (sensorCovered) passOn();
-  }, [sensorCovered, game]);
-  // Nach dem Aufdecken bleibt der Sensor aktiv, auch wenn die Karte verdeckt ist.
-  const { available: sensorAvailable } = useFaceDown(viewed, sensorDown, sensorUp);
+  };
+
+  // The sensor runs from the first reveal until the screen is left, also while the card is covered.
+  const { available: sensorAvailable } = useFaceDown(viewed, handleFaceDown, handleFaceUp);
 
   if (!game) return <SafeAreaView style={styles.safe} />;
 
@@ -50,25 +80,6 @@ export default function CardScreen({ navigation }) {
   const name = game.players[index];
   const spy = isSpy(game, name);
   const isLast = index === total - 1;
-
-  const reveal = () => {
-    setRevealed(true);
-    setViewed(true);
-    setSensorCovered(false);
-  };
-
-  const passOn = async () => {
-    if (passing.current || !game || !viewed) return;
-    passing.current = true;
-    if (isLast) {
-      const next = startTimer({ ...game, cardIndex: total });
-      await saveActiveGame(next);
-      navigation.replace('Round');
-    } else {
-      await saveActiveGame({ ...game, cardIndex: index + 1 });
-      navigation.replace('Card'); // neuer Screen, neuer Zustand: nächste Karte startet verdeckt
-    }
-  };
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -112,7 +123,7 @@ export default function CardScreen({ navigation }) {
             </Notice>
           )}
           {!revealed && viewed && (
-            <Notice>Karte verdeckt. {sensorCovered ? "Drehe das Handy wieder nach oben – es geht automatisch weiter." : `Tippe «${isLast ? "Runde starten" : "Weitergeben"}».`}</Notice>
+            <Notice>Karte verdeckt. {sensorCovered ? "Drehe das Handy wieder nach oben: Es geht automatisch weiter." : `Tippe «${isLast ? "Runde starten" : "Weitergeben"}».`}</Notice>
           )}
           {sensorAvailable === false && !revealed && !viewed && (
             <Notice tone="warning">Sensor nicht verfügbar. Die Karte lässt sich mit dem Button verdecken.</Notice>

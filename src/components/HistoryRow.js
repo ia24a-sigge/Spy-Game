@@ -3,6 +3,10 @@ import { Avatar, Badge } from './ui';
 import { formatShortDate, joinNames } from '../lib/game';
 import { colors, font, sizes } from '../theme';
 
+/**
+ * One finished round in the history on the start screen: category, players, date, spies and winner.
+ * @param {{ entry: { category: string, playerCount: number, date: string, spies: string[], result: 'group' | 'spy' } }} props
+ */
 export default function HistoryRow({ entry }) {
   const groupWins = entry.result === 'group';
   return (

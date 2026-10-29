@@ -1,4 +1,4 @@
-// Validierung des Eingabeformulars (Screen 2 · Einrichten).
+// Validation of the input form (screen 2, "Einrichten"). The messages are shown in the app, so they stay German.
 import { MIN_PLAYERS, maxSpies } from './game';
 
 export const MAX_NAME_LENGTH = 20;
@@ -12,8 +12,11 @@ export const MESSAGES = {
 };
 
 /**
+ * Checks the whole form at once. Names are compared trimmed and case-insensitive,
+ * so "Lena" and "lena " count as duplicates. Only the second occurrence is marked.
  * @param {{ players: string[], spies: number }} input
  * @returns {{ fieldErrors: string[], playersError: string, spiesError: string, valid: boolean }}
+ *   one error per name field (empty string = ok), plus errors for the whole list and the spies
  */
 export function validateSetup({ players, spies }) {
   const normalized = players.map((p) => p.trim().toLowerCase());
