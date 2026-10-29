@@ -12,6 +12,7 @@ wer der Spion ist, und der Spion versucht, nicht aufzufliegen.
 - Karten reihum verteilen, jede Person sieht nur ihre eigene Karte
 - Handy umdrehen verdeckt die Karte (Beschleunigungssensor)
 - Countdown mit Pause, pausiert automatisch, wenn die App in den Hintergrund geht
+- Klingelton, sobald die Zeit abgelaufen ist (auch im Lautlos-Modus auf dem iPhone)
 - Abstimmung und Auflösung, auch mit mehreren Spionen
 - Laufende Runde wird gespeichert und kann fortgesetzt werden
 - Verlauf der letzten 20 Runden
@@ -25,6 +26,7 @@ wer der Spion ist, und der Spion versucht, nicht aufzufliegen.
 | Navigation | React Navigation 7 (Native Stack) |
 | Persistenz | AsyncStorage |
 | Sensor | `expo-sensors` (Accelerometer) |
+| Sound | `expo-audio`, Klingelton in `assets/ring.wav` |
 | Tests | Jest (`jest-expo`) |
 
 ## Starten
@@ -98,7 +100,7 @@ src/
     StartScreen.js         Start: Runde fortsetzen, Verlauf, neue Runde
     SetupScreen.js         Einrichten (Eingabeformular)
     CardScreen.js          Karte (Sensor)
-    RoundScreen.js         Runde (Countdown, Pause)
+    RoundScreen.js         Runde (Countdown, Pause, Klingelton)
     VoteScreen.js          Auflösung (Abstimmen, Ergebnis)
   components/
     ui.js                  Basis-Bausteine: PrimaryButton, IconButton, Stepper, Header, Badge, Notice

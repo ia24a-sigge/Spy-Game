@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
+import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 
 import { IconButton, PrimaryButton, ScreenHeader } from '../components/ui';
 import ConfirmDialog from '../components/ConfirmDialog';
@@ -16,6 +17,11 @@ export default function RoundScreen({ navigation }) {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const gameRef = useRef(null);
   const leaving = useRef(false);
+  const ring = useAudioPlayer(require('../../assets/ring.wav'));
+
+  useEffect(() => {
+    setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
+  }, []);
 
   const update = useCallback(async (next) => {
     gameRef.current = next;
@@ -72,10 +78,13 @@ export default function RoundScreen({ navigation }) {
 
   const left = game ? remainingMs(game, now) : 0;
 
-  // Zeit abgelaufen: automatisch zur Abstimmung.
+  // Zeit abgelaufen: Klingelton und automatisch zur Abstimmung.
   useEffect(() => {
-    if (game && !game.paused && left <= 0) goToVote();
-  }, [game, left, goToVote]);
+    if (!game || game.paused || left > 0 || leaving.current) return;
+    ring.seekTo(0);
+    ring.play();
+    goToVote();
+  }, [game, left, goToVote, ring]);
 
   if (!game) return <SafeAreaView style={styles.safe} />;
 

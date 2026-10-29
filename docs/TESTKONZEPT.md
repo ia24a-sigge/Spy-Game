@@ -37,9 +37,10 @@ Gerät: ______________________ · Betriebssystem: __________ · Datum: _________
 | T15 | Fortsetzen nach Neustart | Während der Runde App komplett schliessen und öffnen | Startscreen zeigt «Runde fortsetzen» mit Restzeit | |
 | T16 | Beenden-Dialog | ✕, «Weiterspielen» | Dialog schliesst, Runde läuft weiter | |
 | T17 | Runde beenden | ✕, «Beenden» | Startscreen, keine laufende Runde | |
-| T18 | Zeit abgelaufen | Zeit 1 min, warten | Wechsel zur Abstimmung | |
-| T19 | Abstimmen | Person wählen, «Aufdecken» | Ergebnis, Spion und Wort sichtbar | |
-| T20 | Verlauf | Zum Start | Runde erscheint unter «Letzte Runden» mit Label | |
-| T21 | Nochmal spielen | Nach dem Aufdecken «Nochmal spielen» | Einrichten mit gleichen Namen | |
-| T22 | Verlauf max. 20 | 21 Runden spielen | Liste zeigt 20 Runden | |
-| T23 | Offline | Flugmodus, ganze Runde spielen | Alles funktioniert | |
+| T18 | Zeit abgelaufen | Zeit 1 min, warten | Klingelton ertönt, Wechsel zur Abstimmung | |
+| T19 | Kein Ton beim Abstimmen | Während die Zeit läuft «Abstimmen» tippen | Kein Klingelton, Wechsel zur Abstimmung | |
+| T20 | Abstimmen | Person wählen, «Aufdecken» | Ergebnis, Spion und Wort sichtbar | |
+| T21 | Verlauf | Zum Start | Runde erscheint unter «Letzte Runden» mit Label | |
+| T22 | Nochmal spielen | Nach dem Aufdecken «Nochmal spielen» | Einrichten mit gleichen Namen | |
+| T23 | Verlauf max. 20 | 21 Runden spielen | Liste zeigt 20 Runden | |
+| T24 | Offline | Flugmodus, ganze Runde spielen | Alles funktioniert | |
