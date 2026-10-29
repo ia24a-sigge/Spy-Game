@@ -28,6 +28,7 @@ wer der Spion ist, und der Spion versucht, nicht aufzufliegen.
 | Persistenz | AsyncStorage |
 | Sensor | `expo-sensors` (Accelerometer) |
 | Sound | `expo-audio`, Klingelton in `assets/ring.wav` |
+| Bildschirm an | `expo-keep-awake` (während der Runde) |
 | Tests | Jest (`jest-expo`) |
 
 ## Starten
@@ -163,6 +164,24 @@ Lokal mit **AsyncStorage**, jeweils als JSON. Kein Server, kein Login.
 
 Der Sensor läuft nur, solange er gebraucht wird. Erkennung: `z > 0.75 g` = Display unten, zurück bei `z < 0.4 g`
 (Hysterese gegen Flackern). Schwellen in `src/lib/faceDown.js`.
+
+## Erweiterung: Klingelton am Rundenende
+
+Neu hinzugefügt: Sobald der Countdown auf 0 ist, ertönt ein Klingelton, das Handy vibriert und die Abstimmung
+öffnet sich automatisch. So merkt die Gruppe das Rundenende auch, wenn niemand aufs Display schaut.
+
+1. Runde starten, der Countdown läuft.
+2. Zeit läuft ab: Klingelton (2.4 s) und Vibration.
+3. Die Abstimmung öffnet sich automatisch.
+
+- Wer selbst auf «Abstimmen» tippt, hört keinen Ton. Er kommt nur, wenn die Zeit abläuft.
+- Der Ton kommt auch im Lautlos-Modus auf dem iPhone (`playsInSilentMode`). Lauter oder leiser stellt man ihn mit der
+  Medienlautstärke.
+- Während der Runde bleibt der Bildschirm an (`expo-keep-awake`). Sonst würde sich das Handy automatisch sperren, die
+  Runde würde pausieren und die Zeit nie ablaufen.
+- Der Ton liegt in `assets/ring.wav` und wird mit `expo-audio` abgespielt. Er wird zuerst lokal aufs Handy geladen
+  (`downloadFirst`), weil das iPhone in Expo Go die Datei vom Dev-Server sonst nicht abspielt.
+- Umgesetzt in `src/screens/RoundScreen.js`, Testfälle T18, T19 und T24 in `docs/TESTKONZEPT.md`.
 
 ## Bewusst weggelassen
 
