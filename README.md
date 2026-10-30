@@ -73,6 +73,18 @@ npm install
 npx expo start --clear
 ```
 
+**«Failed to construct transformer: EINVAL: invalid argument, readlink …»** und danach «Cannot read properties of
+undefined (reading 'get')»: Das Projekt liegt in einem OneDrive-Ordner. OneDrive ersetzt Dateien durch Platzhalter, die
+Metro nicht lesen kann. Das Projekt ausserhalb von OneDrive ablegen, z. B. in `C:\Projects`, und dort neu installieren:
+
+```powershell
+cd C:\Projects
+git clone https://github.com/ia24a-sigge/Spy-Game.git
+cd Spy-Game
+npm install
+npx expo start --clear
+```
+
 **«Port 8081 is being used by another process»:** Mit `y` einen anderen Port nehmen oder das alte Terminal mit
 `npx expo start` schliessen.
 
